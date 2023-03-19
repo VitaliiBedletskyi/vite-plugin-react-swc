@@ -81,7 +81,7 @@ const react = (_options?: Options): PluginOption[] => {
           refresh: !transformOptions?.ssr,
           development: true,
           useBuiltins: true,
-          runtime: "automatic",
+          runtime: "classic",
           importSource: options.jsxImportSource,
         });
         if (!result) return;
@@ -160,6 +160,8 @@ const transformWithOptions = async (
     ? { syntax: "typescript", tsx: false, decorators }
     : id.endsWith(".jsx")
     ? { syntax: "ecmascript", jsx: true }
+    : id.endsWith(".js")
+    ? { syntax: "ecmascript", jsx: true }
     : id.endsWith(".mdx")
     ? // JSX is required to trigger fast refresh transformations, even if MDX already transforms it
       { syntax: "ecmascript", jsx: true }
@@ -174,7 +176,7 @@ const transformWithOptions = async (
       configFile: false,
       sourceMaps: true,
       jsc: {
-        target: "es2020",
+        target: "es5",
         parser,
         experimental: { plugins: options.plugins },
         transform: {
